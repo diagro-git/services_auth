@@ -68,6 +68,5 @@
             "github.com": "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"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "minimum-stability": "stable"
 }

@@ -1,0 +1,36 @@
+version: '3.5'
+
+networks:
+  auth-network:
+  traefik-network:
+    name: traefik-network
+    external: true
+
+services:
+  database:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_DATABASE: diagro
+      MARIADB_USER: diagro
+      MARIADB_PASSWORD: 2WA=CP@!trGv_AnN
+    networks:
+      - auth-network
+
+  auth:
+    image: stijn989/diagro-auth:dev
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - traefik-network
+      - auth-network
+    restart: always
+    volumes:
+      - /home/diagro/service_auth:/diagro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.rule=Host(`auth.diagro.dev`)"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.routers.portainer.tls.certresolver=production"

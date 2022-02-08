@@ -5,9 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CountrySeeder extends Seeder
+class CompanySeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -15,11 +14,9 @@ class CountrySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('countries')->insert([
-            'name_native' => 'België',
-            'name_international' => 'Belgium',
-            'iso_3166_1' => 'BEL',
-            'currency_id' => 1,
+        DB::table('companies')->insert([
+            'name' => 'Diagro',
+            'country_id' => 1
         ]);
     }
 }

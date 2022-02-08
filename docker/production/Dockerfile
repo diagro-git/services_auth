@@ -8,8 +8,8 @@ RUN apt install -y g++ libicu-dev libpq-dev libzip-dev zip zlib1g-dev curl
 RUN docker-php-ext-install intl opcache pdo pdo_mysql
 
 RUN apt-get install -y nginx
-COPY docker/nginx/app.conf /etc/nginx/sites-enabled/default
-COPY docker/entrypoint.sh /etc/entrypoint.sh
+COPY docker/production/nginx/app.conf /etc/nginx/sites-enabled/default
+COPY docker/production/entrypoint.sh /etc/entrypoint.sh
 RUN chmod +x /etc/entrypoint.sh
 
 RUN mkdir /diagro
@@ -29,10 +29,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN chmod +x /usr/local/bin/composer
 
 WORKDIR /diagro
-RUN composer install
+RUN composer install --no-dev
 
 LABEL traefik.enable="true"
-LABEL traefik.http.routers.$ROUTER_NAME.entrypoints="web,websecure"
+LABEL traefik.http.routers.$ROUTER_NAME.entrypoints="websecure"
 LABEL traefik.http.routers.$ROUTER_NAME.rule="Host(`${HOST_NAME}`)"
 LABEL traefik.http.routers.$ROUTER_NAME.tls="true"
 LABEL traefik.http.routers.$ROUTER_NAME.tls.certresolver="production"
