@@ -6,13 +6,13 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/diagro-git/diagro-token.git"
+            "url": "https://github.com/diagro-git/lib_laravel_token.git"
         }
     ],
     "require": {
         "php": "^8.0",
         "ext-openssl": "*",
-        "diagro/token": "master",
+        "diagro/token": "^1.0|master",
         "doctrine/dbal": "^3.1",
         "firebase/php-jwt": "5.4.0",
         "fruitcake/laravel-cors": "^2.0",
