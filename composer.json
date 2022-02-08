@@ -1,8 +1,8 @@
 {
-    "name": "diagro/auth",
+    "name": "diagro/services_auth",
     "type": "project",
-    "description": "Diagro authentication service",
-    "keywords": ["diagro", "auth"],
+    "description": "Authentication service for Diagro users",
+    "keywords": ["diagro", "auth", "services", "laravel"],
     "repositories": [
         {
             "type": "vcs",
@@ -12,7 +12,7 @@
     "require": {
         "php": "^8.0",
         "ext-openssl": "*",
-        "diagro/token": "^1.0|master",
+        "diagro/lib_laravel_token": "^1.0|master",
         "doctrine/dbal": "^3.1",
         "firebase/php-jwt": "5.4.0",
         "fruitcake/laravel-cors": "^2.0",
