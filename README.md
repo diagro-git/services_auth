@@ -42,8 +42,8 @@ De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt 
 
 ## Production
 
-* Link: <https://weegbrug-api.diagro.farm>
-* Docker: `docker pull stijn1989/weegbrug-api:latest`
+* Link: <https://auth.diagro.farm>
+* Docker: `docker pull stijn1989/diagro-auth:latest`
 * Portainer: <https://portainer.diagro.farm>
 * Docker server: `ssh diagro@159.223.1.58 -p 24045`
 * Database server: `ssh diagro@165.22.200.34 -p 24045`
