@@ -14,7 +14,10 @@ class FrontendApplicationSeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('frontend_applications')->find(1) != null) return;
+
         DB::table('frontend_applications')->insert([
+            'id' => 1,
             'name' => 'Postman',
             'description' => 'Postman testing programma',
             'app_type' => 0,

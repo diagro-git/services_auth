@@ -15,7 +15,10 @@ class CurrencySeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('currencies')->find(1) != null) return;
+
         DB::table('currencies')->insert([
+            'id' => 1,
             'name' => 'Euro',
             'iso_4217' => 'EUR',
         ]);

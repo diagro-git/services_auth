@@ -15,7 +15,10 @@ class LocaleSeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('locales')->find(1) != null) return;
+
         DB::table('locales')->insert([
+            'id' => 1,
             'identifier' => 'nl-BE',
             'language_id' => 1,
         ]);

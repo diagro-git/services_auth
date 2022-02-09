@@ -15,7 +15,10 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('roles')->find(1) != null) return;
+
         DB::table('roles')->insert([
+            'id' => 1,
             'name' => 'Developer',
         ]);
     }

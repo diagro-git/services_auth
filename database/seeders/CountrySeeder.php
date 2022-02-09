@@ -15,7 +15,10 @@ class CountrySeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('countries')->find(1) != null) return;
+
         DB::table('countries')->insert([
+            'id' => 1,
             'name_native' => 'België',
             'name_international' => 'Belgium',
             'iso_3166_1' => 'BEL',

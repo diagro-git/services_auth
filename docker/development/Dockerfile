@@ -7,9 +7,7 @@ RUN docker-php-ext-install intl opcache pdo pdo_mysql
 RUN apt-get install -y nginx
 COPY nginx/app.conf /etc/nginx/sites-enabled/default
 COPY entrypoint.sh /etc/entrypoint.sh
-COPY wait-for-it.sh /etc/wait-for-it.sh
 RUN chmod +x /etc/entrypoint.sh
-RUN chmod +x /etc/wait-for-it.sh
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN chmod +x /usr/local/bin/composer

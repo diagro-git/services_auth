@@ -14,7 +14,10 @@ class UserCompanySeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('user_companies')->find(1) != null) return;
+
         DB::table('user_companies')->insert([
+            'id' => 1,
             'user_id' => 1,
             'company_id' => 1,
             'role_id' => 1,

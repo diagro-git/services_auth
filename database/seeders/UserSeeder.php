@@ -17,7 +17,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('users')->find(1) != null) return;
+
         DB::table('users')->insert([
+            'id' => 1,
             'name' => 'Diagro',
             'email' => 'diagro@diagro.dev',
             'password' => Hash::make("password"),

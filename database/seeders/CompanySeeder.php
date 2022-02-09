@@ -14,7 +14,10 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
+        if(DB::table('companies')->find(1) != null) return;
+
         DB::table('companies')->insert([
+            'id' => 1,
             'name' => 'Diagro',
             'country_id' => 1
         ]);

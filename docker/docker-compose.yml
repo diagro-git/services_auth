@@ -3,30 +3,20 @@ version: '3.5'
 networks:
   auth-network:
     name: auth-network
+  database-network:
+    name: database-network
+    external: true
 
 services:
-  database:
-    image: mariadb:latest
-    expose:
-      - 3306
-    environment:
-      MARIADB_ROOT_PASSWORD: 2WA=CP@!trGv_AnN
-      MARIADB_DATABASE: diagro
-      MARIADB_USER: diagro
-      MARIADB_PASSWORD: 2WA=CP@!trGv_AnN
-    networks:
-      - auth-network
-
   auth:
     build: ./development
     image: service-auth:dev
     expose:
       - 80
     networks:
+      - database-network
       - auth-network
     restart: always
-    depends_on:
-      - "database"
     volumes:
       - /home/diagro/service_auth:/diagro
     labels:
