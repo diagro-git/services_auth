@@ -22,7 +22,9 @@ class UserSeeder extends Seeder
             'email' => 'diagro@diagro.dev',
             'password' => Hash::make("password"),
             'email_verified_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'remember_token' => Str::random(10)
+            'remember_token' => Str::random(10),
+            'locale_id' => 1,
+            'timezone_id' => 1,
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\FrontendApplication;
 use App\Models\User;
 use App\Services\TokenService;
 use Diagro\Token\AuthenticationToken;
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -70,8 +71,10 @@ class AuthController extends Controller
             } else {
                 return ['at' => $token, 'companies' => $companies];
             }
-        } else {
+        } elseif(count($companies) == 1) {
             return ['at' => $token, 'aat' => $service->createAAT($at, $companies->first())->token()];
+        } else {
+            throw new Exception("Geen applicaties gevonden voor deze gebruiker!");
         }
     }
 
