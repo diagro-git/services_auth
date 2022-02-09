@@ -18,10 +18,27 @@ En het valideren van de tokens.
 
 ## Development
 
-Na het seeden zitten volgende entries in de database:
+Na het runnen van de `docker-compose.yml` zitten volgende entries in de database (alles heeft ID 1):
 
 * company: **Diagro**
-* role: **
+* user: **diagro@diagro.be:password**
+* role: **Developer**
+* frontend: **Postman**
+* currency: **euro**
+* locale: **nl-BE**
+* language: **nederlands**
+* country: **belgië**
+* timezone: **Europe/Brussels**
+
+### Traefik
+
+Er wordt een netwerk `auth-network` gemaakt. De traefik container moet deelnemen aan dit netwerk.
+Dan is de development bereikbaar op <https://auth.diagro.dev>.
+
+### Editor
+
+Alles in sync brengen op de docker-dev server: `ssh diagro@159.223.5.240:/home/diagro/service_auth/ -p 24045`
+De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt bij het runnen van de docker compose.
 
 ## Production
 
