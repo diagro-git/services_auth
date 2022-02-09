@@ -1,12 +1,12 @@
 {
-    "name": "diagro/auth",
+    "name": "diagro/services_auth",
     "type": "project",
-    "description": "Diagro authentication service",
-    "keywords": ["diagro", "auth"],
+    "description": "Authentication service for Diagro users",
+    "keywords": ["diagro", "auth", "services", "laravel"],
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/diagro-git/diagro-token.git"
+            "url": "https://github.com/diagro-git/lib_laravel_token.git"
         }
     ],
     "require": {
