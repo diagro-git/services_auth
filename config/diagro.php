@@ -1,10 +1,10 @@
 <?php
 return [
 
-    'app_id' => env('DIAGRO_APP_ID', '1'),
+    'app_id' => env('DIAGRO_APP_ID', null),
 
-    'app_name' => env('DIAGRO_APP_NAME', 'Diagro'),
+    'app_name' => env('DIAGRO_APP_NAME', null),
 
-    'diagro_service_uri' => env('DIAGRO_DIAGRO_SERVICE_URI', 'http://localhost:5000')
+    'service_auth_uri' => env('DIAGRO_SERVICE_AUTH_URI', null)
 
 ];
