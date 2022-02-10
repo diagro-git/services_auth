@@ -1,10 +1,10 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://diagro.be/assets/img/diagro-logo.svg" width="400"></a></p>
+<p align="center"><a href="https://www.diagro.be" target="_blank"><img src="https://diagro.be/assets/img/diagro-logo.svg" width="400"></a></p>
 
 <p align="center">
-<img src="https://img.shields.io/badge/project-authentication/authorization-yellowgreen" alt="Diagro backend">
-<a href="https://github.com/diagro-git/service_auth"><img src="https://img.shields.io/badge/type-service-informational" alt="Diagro service"></a>
-<a href="https://php.net"><img src="https://img.shields.io/badge/php-8.0-blueviolet" alt="PHP"></a>
-<a href="https://laravel.com/docs/8.x/"><img src="https://img.shields.io/badge/laravel-8.67-red" alt="Laravel framework"></a>
+<img src="https://img.shields.io/badge/project-authentication/authorization-yellowgreen" alt="Diagro auth service">
+<img src="https://img.shields.io/badge/type-service-informational" alt="Diagro service">
+<img src="https://img.shields.io/badge/php-8.0-blueviolet" alt="PHP">
+<img src="https://img.shields.io/badge/laravel-8.67-red" alt="Laravel framework">
 </p>
 
 ## Beschrijving
@@ -50,7 +50,7 @@ De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt 
 
 ## Changelog
 
-### V1.0.0
+### V1.0
 
 * **Feature**: inloggen met email/wachtwoord
 * **Feature**: inloggen met AT token
