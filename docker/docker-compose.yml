@@ -25,3 +25,4 @@ services:
       - "traefik.http.routers.service_auth.rule=Host(`auth.diagro.dev`)"
       - "traefik.http.routers.service_auth.tls=true"
       - "traefik.http.routers.service_auth.tls.certresolver=production"
+      - "traefik.docker.network=auth-network"
