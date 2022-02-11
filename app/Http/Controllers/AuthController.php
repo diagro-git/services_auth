@@ -44,7 +44,7 @@ class AuthController extends Controller
             $provider = Auth::createUserProvider('users');
             /** @var User $user */
             $user = $provider->retrieveByCredentials($data);
-            if(! $provider->validateCredentials($user, $data)) {
+            if($user == null || ! $provider->validateCredentials($user, $data)) {
                 abort(401, 'Invalid user credentials!');
             }
 
