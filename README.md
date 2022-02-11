@@ -50,6 +50,10 @@ De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt 
 
 ## Changelog
 
+### V1.1
+
+* **Bugfix**: user bestaat niet in database error (AuthController)
+
 ### V1.0
 
 * **Feature**: inloggen met email/wachtwoord
