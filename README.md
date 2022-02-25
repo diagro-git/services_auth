@@ -3,8 +3,8 @@
 <p align="center">
 <img src="https://img.shields.io/badge/project-authentication/authorization-yellowgreen" alt="Diagro auth service">
 <img src="https://img.shields.io/badge/type-service-informational" alt="Diagro service">
-<img src="https://img.shields.io/badge/php-8.0-blueviolet" alt="PHP">
-<img src="https://img.shields.io/badge/laravel-8.67-red" alt="Laravel framework">
+<img src="https://img.shields.io/badge/php-8.1-blueviolet" alt="PHP">
+<img src="https://img.shields.io/badge/laravel-9.0-red" alt="Laravel framework">
 </p>
 
 ## Beschrijving
@@ -52,7 +52,9 @@ De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt 
 
 ### V1.1
 
-* **Bugfix**: user bestaat niet in database error (AuthController)
+* **Update**: PHP8.1 en Laravel 9.0
+* **Feature**: revoken van tokens via PUT requests
+* **Feature**: geef een AAT token terug bij refresh die niet expired is.
 
 ### V1.0
 

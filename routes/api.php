@@ -5,17 +5,6 @@ use App\Http\Middleware\AuthenticationTokenValid;
 use App\Http\Middleware\ValidateAppId;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 //Login doesn't require the user token to be presence. Only the app id needs to be validate.
 Route::post('/login', 'AuthController@login')->middleware([ValidateAppId::class]);
 
@@ -23,6 +12,7 @@ Route::post('/login', 'AuthController@login')->middleware([ValidateAppId::class]
 Route::get('/validate/token', [ValidateController::class, 'token']);
 Route::get('/validate/user-token', [ValidateController::class, 'userToken']);
 Route::get('/validate/app', [ValidateController::class, 'app'])->middleware(ValidateAppId::class);
+Route::put('/validate/revoke', [ValidateController::class, 'revoke'])->middleware(ValidateAppId::class);
 
 
 Route::middleware([ValidateAppId::class, AuthenticationTokenValid::class, 'auth:user-token'])->group(function() {

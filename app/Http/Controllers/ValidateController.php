@@ -8,6 +8,7 @@ use Diagro\Token\ApplicationAuthenticationToken;
 use Diagro\Token\AuthenticationToken;
 use Firebase\JWT\ExpiredException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Throwable;
 
 class ValidateController extends Controller
@@ -73,6 +74,14 @@ class ValidateController extends Controller
     public function app(Request $request)
     {
         //everything is checked in the middleware ValidateAppId
+    }
+
+
+    public function revoke(Request $request, TokenService $service)
+    {
+        $token = $request->bearerToken();
+        $reason = Arr::get($request->all(), 'reason', 'No reason specified!');
+        $service->revokeToken($token, $reason);
     }
 
 

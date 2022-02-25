@@ -1,11 +1,11 @@
-FROM php:8.0-fpm-buster
+FROM php:8.1-fpm-buster
 
 ARG ROUTER_NAME="auth"
 ARG HOST_NAME="auth.diagro.farm"
 
 RUN apt-get update
 RUN apt install -y g++ libicu-dev libpq-dev libzip-dev zip zlib1g-dev curl
-RUN docker-php-ext-install intl opcache pdo pdo_mysql
+RUN docker-php-ext-install intl pdo pdo_mysql
 
 RUN apt-get install -y nginx
 COPY docker/production/nginx/app.conf /etc/nginx/sites-enabled/default

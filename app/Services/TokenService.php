@@ -177,6 +177,36 @@ class TokenService
 
 
     /**
+     * Get an AAT token that isn't expired for given AT token.
+     *
+     * @param AuthenticationToken $at
+     * @return ApplicationAuthenticationToken|null
+     */
+    public function getValidAAT(AuthenticationToken $at): ?ApplicationAuthenticationToken
+    {
+        $aat = null;
+        $token = TokenModel::query()
+            ->where([
+                'token_type' => 'AAT',
+                'issuer' => $this->issuer(),
+                'device' => $this->device(),
+                'status' => 0,
+                'user_id' => $at->user()->id()
+            ])->first();
+
+        if($token != null) {
+            try {
+                $aat = ApplicationAuthenticationToken::createFromToken($token->token);
+            } catch(Exception $e) {
+                $this->revokeToken($token->token, 'getValidAAT could not createFromToken!');
+            }
+        }
+
+        return $aat;
+    }
+
+
+    /**
      * Create an AAT token based from an AT token and the choosen company.
      * The applications are the applications linked to the frontend application.
      *
@@ -187,41 +217,45 @@ class TokenService
      */
     public function createAAT(AuthenticationToken $at, Company $company) : ApplicationAuthenticationToken
     {
-        $tu = new \Diagro\Token\Model\User($at->user()->id(), $at->user()->name(), $at->user()->locale(), $at->user()->lang(), $at->user()->timezone());
-        $tc = new \Diagro\Token\Model\Company($company->id, $company->name, $company->country()->first()->iso_3166_1, $company->currency()->first()->iso_4217);
-        /** @var User $user */
-        $user = User::query()->findOrFail($tu->id());
-        /** @var FrontendApplication $frontend */
-        $frontend = app()->make(FrontendApplication::class);
+        $aat = $this->getValidAAT($at);
 
-        //role of the user in the company
-        $role = $company->pivot->role()->first();
-        $tu->role($role->name);
+        if($aat == null) {
+            $tu = new \Diagro\Token\Model\User($at->user()->id(), $at->user()->name(), $at->user()->locale(), $at->user()->lang(), $at->user()->timezone());
+            $tc = new \Diagro\Token\Model\Company($company->id, $company->name, $company->country()->first()->iso_3166_1, $company->currency()->first()->iso_4217);
+            /** @var User $user */
+            $user = User::query()->findOrFail($tu->id());
+            /** @var FrontendApplication $frontend */
+            $frontend = app()->make(FrontendApplication::class);
 
-        //applications where user/company has rights
-        $applications = [];
-        foreach($frontend->applications()->get() as $app) {
-            $application = new Application($app->id, $app->name);
-            $rights = $user->rights($company, $app);
-            foreach($rights as $name => $permissions) {
-                $p = new Permission();
-                $p->canRead($permissions['r'])
-                    ->canCreate($permissions['c'])
-                    ->canUpdate($permissions['u'])
-                    ->canDelete($permissions['d'])
-                    ->canPublish($permissions['p'])
-                    ->canExport($permissions['e']);
-                $application->addPermission($name, $p);
+            //role of the user in the company
+            $role = $company->pivot->role()->first();
+            $tu->role($role->name);
+
+            //applications where user/company has rights
+            $applications = [];
+            foreach ($frontend->applications()->get() as $app) {
+                $application = new Application($app->id, $app->name);
+                $rights = $user->rights($company, $app);
+                foreach ($rights as $name => $permissions) {
+                    $p = new Permission();
+                    $p->canRead($permissions['r'])
+                        ->canCreate($permissions['c'])
+                        ->canUpdate($permissions['u'])
+                        ->canDelete($permissions['d'])
+                        ->canPublish($permissions['p'])
+                        ->canExport($permissions['e']);
+                    $application->addPermission($name, $p);
+                }
+
+                //only add applications where user has permissions with
+                if (count($application->permissions()) > 0) {
+                    $applications[] = $application;
+                }
             }
 
-            //only add applications where user has permissions with
-            if(count($application->permissions()) > 0) {
-                $applications[] = $application;
-            }
+            $aat = new ApplicationAuthenticationToken($tu, $tc, $applications, $this->issuer(), $this->device());
+            $this->saveToken($aat, $user->id);
         }
-
-        $aat = new ApplicationAuthenticationToken($tu, $tc, $applications, $this->issuer(), $this->device());
-        $this->saveToken($aat, $user->id);
 
         return $aat;
     }
