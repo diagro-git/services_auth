@@ -67,12 +67,12 @@ class AuthController extends Controller
             }
 
             if(isset($company) && $company instanceof Company) {
-                return ['at' => $token, 'aat' => $service->createAAT($at, $company)->token()];
+                return ['at' => $token, 'aat' => $service->createAAT($at, $company)?->token()];
             } else {
                 return ['at' => $token, 'companies' => $companies];
             }
         } elseif(count($companies) == 1) {
-            return ['at' => $token, 'aat' => $service->createAAT($at, $companies->first())->token()];
+            return ['at' => $token, 'aat' => $service->createAAT($at, $companies->first())?->token()];
         } else {
             throw new Exception("Geen applicaties gevonden voor deze gebruiker!");
         }
@@ -125,7 +125,7 @@ class AuthController extends Controller
             })
             ->firstOrFail();
 
-        return ['aat' => $service->createAAT($at, $company)->token()];
+        return ['aat' => $service->createAAT($at, $company)?->token()];
     }
 
 

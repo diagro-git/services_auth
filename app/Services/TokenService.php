@@ -212,10 +212,11 @@ class TokenService
      *
      * @param AuthenticationToken $at
      * @param Company $company
-     * @return ApplicationAuthenticationToken
-     * @throws BindingResolutionException|Throwable
+     * @return ApplicationAuthenticationToken|null
+     * @throws BindingResolutionException
+     * @throws Throwable
      */
-    public function createAAT(AuthenticationToken $at, Company $company) : ApplicationAuthenticationToken
+    public function createAAT(AuthenticationToken $at, Company $company) : ?ApplicationAuthenticationToken
     {
         $aat = $this->getValidAAT($at);
 
@@ -253,8 +254,11 @@ class TokenService
                 }
             }
 
-            $aat = new ApplicationAuthenticationToken($tu, $tc, $applications, $this->issuer(), $this->device());
-            $this->saveToken($aat, $user->id);
+            //create an AAT when the user has any rights to any application.
+            if(count($applications) > 0) {
+                $aat = new ApplicationAuthenticationToken($tu, $tc, $applications, $this->issuer(), $this->device());
+                $this->saveToken($aat, $user->id);
+            }
         }
 
         return $aat;
