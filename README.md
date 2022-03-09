@@ -50,6 +50,10 @@ De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt 
 
 ## Changelog
 
+### V1.2
+
+* **Update**: company switch mogelijk met AAT tokens
+
 ### V1.1
 
 * **Update**: PHP8.1 en Laravel 9.0
