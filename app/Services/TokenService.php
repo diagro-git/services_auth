@@ -180,23 +180,30 @@ class TokenService
      * Get an AAT token that isn't expired for given AT token.
      *
      * @param AuthenticationToken $at
+     * @param Company $company
      * @return ApplicationAuthenticationToken|null
      */
-    public function getValidAAT(AuthenticationToken $at): ?ApplicationAuthenticationToken
+    public function getValidAAT(AuthenticationToken $at, Company $company): ?ApplicationAuthenticationToken
     {
         $aat = null;
-        $token = TokenModel::query()
+        $tokens = TokenModel::query()
             ->where([
                 'token_type' => 'AAT',
                 'issuer' => $this->issuer(),
                 'device' => $this->device(),
                 'status' => 0,
                 'user_id' => $at->user()->id()
-            ])->first();
+            ])->get();
 
-        if($token != null) {
+        /** @var TokenModel $token */
+        foreach($tokens as $token) {
             try {
-                $aat = ApplicationAuthenticationToken::createFromToken($token->token);
+                $tmp = ApplicationAuthenticationToken::createFromToken($token->token);
+                if($tmp->company()->id() == $company->id) {
+                    $aat = $tmp;
+                } else {
+                    $this->revokeToken($token->token, 'getValidAAT company switch!');
+                }
             } catch(Exception $e) {
                 $this->revokeToken($token->token, 'getValidAAT could not createFromToken!');
             }
@@ -218,7 +225,7 @@ class TokenService
      */
     public function createAAT(AuthenticationToken $at, Company $company) : ?ApplicationAuthenticationToken
     {
-        $aat = $this->getValidAAT($at);
+        $aat = $this->getValidAAT($at, $company);
 
         if($aat == null) {
             $tu = new \Diagro\Token\Model\User($at->user()->id(), $at->user()->name(), $at->user()->locale(), $at->user()->lang(), $at->user()->timezone());
