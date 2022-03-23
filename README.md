@@ -50,6 +50,10 @@ De map `vendor` en file `composer.lock` niet in sync brengen. Dat wordt gemaakt 
 
 ## Changelog
 
+### V1.3
+
+* **Update**: endpoint /token-device-uid om AT token op te halen aan de hand van unique device id
+
 ### V1.2
 
 * **Update**: company switch mogelijk met AAT tokens

@@ -30,7 +30,7 @@ class AuthController extends Controller
         //has AT token?
         if(($token = $request->bearerToken()) != null) {
             $valid = $service->isValid($token);
-            if($valid !== true) abort(406, $valid);
+            if ($valid !== true) abort(406, $valid);
 
             $at = app(AuthenticationToken::class);
             $user = $request->user();
@@ -49,7 +49,7 @@ class AuthController extends Controller
             }
 
             //create AT token
-            $at = $service->createAT($user);
+            $at = $service->createAT($user, $request->header('x-device-uid'));
             $token = $at->token();
         }
 
@@ -140,6 +140,12 @@ class AuthController extends Controller
     {
         $revoked = $service->revokeTokens($request->user(), $request->user(), 'Logout');
         return ['logged_out' => ($revoked > 0)];
+    }
+
+
+    public function tokenFromDeviceUID(Request $request, TokenService $service)
+    {
+        return ['at' => $service->tokenByDeviceUID($request->header('x-device-uid'))];
     }
 
 

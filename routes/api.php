@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 //Login doesn't require the user token to be presence. Only the app id needs to be validate.
 Route::post('/login', 'AuthController@login')->middleware([ValidateAppId::class]);
+//get an AT token from the user device UID
+Route::post('/token-device-uid', 'AuthController@tokenFromDeviceUID')->middleware([ValidateAppId::class]);
 
 //validation route
 Route::get('/validate/token', [ValidateController::class, 'token']);

@@ -29,7 +29,8 @@ class Token extends Model
         'revoked_by',
         'revoked_reason',
         'issuer',
-        'device'
+        'device',
+        'device_uid'
     ];
 
 

@@ -28,11 +28,11 @@ class TokenService
      * @return AuthenticationToken
      * @throws Throwable
      */
-    public function createAT(User $user) : AuthenticationToken
+    public function createAT(User $user, ?string $device_uid = null) : AuthenticationToken
     {
         $tu = new \Diagro\Token\Model\User($user->id, $user->name, $user->locale()->first()->identifier, $user->language()->first()->iso_639_2, $user->timezone()->first()->name);
         $at = new AuthenticationToken($tu, $this->issuer(), $this->device());
-        $this->saveToken($at, $user->id);
+        $this->saveToken($at, $user->id, $device_uid);
 
         return $at;
     }
@@ -132,7 +132,7 @@ class TokenService
      * @param int $user_id
      * @throws Throwable
      */
-    private function saveToken(Token $token, int $user_id)
+    private function saveToken(Token $token, int $user_id, ?string $device_uid = null)
     {
         $model = new TokenModel();
         $model->user_id = $user_id;
@@ -141,6 +141,7 @@ class TokenService
         $model->token = $token->token();
         $model->issuer = $this->issuer();
         $model->device = $this->device();
+        $model->device_uid = $device_uid;
         $model->saveOrFail();
     }
 
@@ -269,6 +270,17 @@ class TokenService
         }
 
         return $aat;
+    }
+
+    public function tokenByDeviceUID(?string $uid): ?string
+    {
+        if(! empty($uid)) {
+            return TokenModel::query()
+                ->where(['token_type' => TokenModel::TOKEN_TYPE_AT, 'device_uid' => $uid, 'status' => 0])
+                ->first()?->token; /* there should be one active AT token with given $uid */
+        }
+
+        return null;
     }
 
 
