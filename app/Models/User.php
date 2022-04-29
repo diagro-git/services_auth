@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -79,11 +80,27 @@ class User extends Authenticatable
             ->withPivot(['id', 'role_id']);
 
         if($frontend != null) {
-            $relation->whereHas('applications', function(Builder $query) use ($frontend) {
-                $query->whereHas('frontendApplications', function(Builder $query) use ($frontend) {
-                    $query->where('frontend_application_id', '=', $frontend->id);
-                });
-            });
+            $application_ids = Arr::pluck($frontend->applications()->get(['id'])->toArray(), 'id');
+            $relation->join('installations', 'companies.id', '=', 'installations.company_id');
+            $relation->whereIn('installations.application_id', $application_ids);
+            $relation->groupBy([
+                'companies.id',
+                'companies.name',
+                'companies.country_id',
+                'companies.created_at',
+                'companies.updated_at',
+                'companies.deleted_at',
+                'companies.address',
+                'companies.is_partner',
+                'companies.invoice_to',
+                'user_companies.user_id',
+                'user_companies.company_id',
+                'user_companies.created_at',
+                'user_companies.updated_at',
+                'user_companies.id',
+                'user_companies.role_id',
+            ]);
+            $relation->havingRaw('COUNT(companies.id) = ?', [count($application_ids)]);
         }
 
         return $relation;

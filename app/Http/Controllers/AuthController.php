@@ -74,7 +74,7 @@ class AuthController extends Controller
         } elseif(count($companies) == 1) {
             return ['at' => $token, 'aat' => $service->createAAT($at, $companies->first())?->token()];
         } else {
-            throw new Exception("Geen applicaties gevonden voor deze gebruiker!");
+            throw new Exception("Geen bedrijven gevonden voor deze gebruiker!");
         }
     }
 

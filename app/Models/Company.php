@@ -16,14 +16,12 @@ class Company extends Model
 
     protected $fillable = [
         'name',
-        'country_id',
-        'db_name'
+        'country_id'
     ];
 
     protected $visible = [
         'id',
-        'name',
-        'db_name'
+        'name'
     ];
 
 
