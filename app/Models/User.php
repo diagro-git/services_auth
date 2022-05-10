@@ -80,7 +80,10 @@ class User extends Authenticatable
             ->withPivot(['id', 'role_id']);
 
         if($frontend != null) {
-            $application_ids = Arr::pluck($frontend->applications()->get(['id'])->toArray(), 'id');
+            $application_ids = Arr::pluck($frontend->applications()
+                ->wherePivot('required', '=', true)
+                ->get(['id'])
+                ->toArray(), 'id');
             $relation->join('installations', 'companies.id', '=', 'installations.company_id');
             $relation->whereIn('installations.application_id', $application_ids);
             $relation->groupBy([

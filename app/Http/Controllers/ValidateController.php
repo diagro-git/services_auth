@@ -77,6 +77,13 @@ class ValidateController extends Controller
     }
 
 
+    /**
+     * Revoke the token in the authorization header.
+     *
+     * @param Request $request
+     * @param TokenService $service
+     * @return void
+     */
     public function revoke(Request $request, TokenService $service)
     {
         $token = $request->bearerToken();

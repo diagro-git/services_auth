@@ -10,6 +10,7 @@ class FrontendApplication extends Model
 
     const TYPE_WEB                              = 0;
     const TYPE_FLUTTER                          = 1;
+    const TYPE_SYSTEM                           = 2;
 
     protected $fillable = [
         'name',

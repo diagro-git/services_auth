@@ -62,7 +62,13 @@ class AuthController extends Controller
         if(count($companies) > 1) {
             if($request->hasHeader('x-company-preffered')) {
                 $company = $companies->first(function($company) use ($request) {
-                    return $company->name == $request->header('x-company-preffered');
+                    $cf = $request->header('x-company-preffered');
+                    if(is_string($cf)) { //name
+                        return $company->name == $cf;
+                    } elseif(is_int($cf)) { //id
+                        return $company->id == $cf;
+                    }
+                    return false;
                 });
             }
 
@@ -143,6 +149,15 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Get an active AT token from given device UID.
+     * This AT token can be used to login
+     * and obtain an AAT token.
+     *
+     * @param Request $request
+     * @param TokenService $service
+     * @return array
+     */
     public function tokenFromDeviceUID(Request $request, TokenService $service)
     {
         return ['at' => $service->tokenByDeviceUID($request->header('x-device-uid'))];

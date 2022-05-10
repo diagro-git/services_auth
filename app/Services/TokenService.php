@@ -25,14 +25,52 @@ class TokenService
      * Create an AT token based on the provided user.
      *
      * @param User $user
+     * @param string|null $device_uid
      * @return AuthenticationToken
      * @throws Throwable
      */
     public function createAT(User $user, ?string $device_uid = null) : AuthenticationToken
     {
-        $tu = new \Diagro\Token\Model\User($user->id, $user->name, $user->locale()->first()->identifier, $user->language()->first()->iso_639_2, $user->timezone()->first()->name);
-        $at = new AuthenticationToken($tu, $this->issuer(), $this->device());
-        $this->saveToken($at, $user->id, $device_uid);
+        //check if there is an AT token for this user which is not expired. Else expire them and create new ones
+        $at = $this->getValidAT($user, $device_uid);
+        if($at == null) {
+            $tu = new \Diagro\Token\Model\User($user->id, $user->name, $user->locale()->first()->identifier, $user->language()->first()->iso_639_2, $user->timezone()->first()->name);
+            $at = new AuthenticationToken($tu, $this->issuer(), $this->device());
+            $this->saveToken($at, $user->id, $device_uid);
+        }
+
+        return $at;
+    }
+
+
+    /**
+     * Get an AT token that isn't expired for given user and device uid
+     *
+     * @param User $user
+     * @param string|null $device_uid
+     * @return AuthenticationToken|null
+     */
+    public function getValidAT(User $user, ?string $device_uid = null): ?AuthenticationToken
+    {
+        $at = null;
+        $tokens = TokenModel::query()
+            ->where([
+                'token_type' => 'AT',
+                'issuer' => $this->issuer(),
+                'device' => $this->device(),
+                'device_uid' => $device_uid,
+                'status' => 0,
+                'user_id' => $user->id
+            ])->get();
+
+        /** @var TokenModel $token */
+        foreach($tokens as $token) {
+            try {
+                $at = AuthenticationToken::createFromToken($token->token);
+            } catch(Exception $e) {
+                $this->revokeToken($token->token, 'getValidAT could not createFromToken!');
+            }
+        }
 
         return $at;
     }
@@ -272,6 +310,12 @@ class TokenService
         return $aat;
     }
 
+    /**
+     * Get an active AT token for given device UID.
+     *
+     * @param string|null $uid
+     * @return string|null
+     */
     public function tokenByDeviceUID(?string $uid): ?string
     {
         if(! empty($uid)) {
