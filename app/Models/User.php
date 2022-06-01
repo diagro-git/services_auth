@@ -94,7 +94,6 @@ class User extends Authenticatable
                 'companies.updated_at',
                 'companies.deleted_at',
                 'companies.address',
-                'companies.is_partner',
                 'companies.invoice_to',
                 'user_companies.user_id',
                 'user_companies.company_id',
