@@ -96,6 +96,8 @@ class User extends Authenticatable
                 'companies.address',
                 'companies.invoice_to',
                 'companies.vat',
+                'companies.parent_id',
+                'companies.est_unit_nr',
                 'user_companies.user_id',
                 'user_companies.company_id',
                 'user_companies.created_at',

@@ -61,12 +61,12 @@ class AuthController extends Controller
         //if multiple companies, return them to the frontend app and let the user choose one.
         if(count($companies) > 1) {
             if($request->hasHeader('x-company-preffered')) {
-                $company = $companies->first(function($company) use ($request) {
-                    $cf = $request->header('x-company-preffered');
-                    if(is_string($cf)) { //name
-                        return $company->name == $cf;
-                    } elseif(is_int($cf)) { //id
-                        return $company->id == $cf;
+                $cp = $request->header('x-company-preffered');
+                $company = $companies->first(function($company) use ($cp) {
+                    if(ctype_digit($cp)) { //id
+                        return $company->id == $cp;
+                    } elseif(is_string($cp)) { //name
+                        return $company->name == $cp;
                     }
                     return false;
                 });

@@ -33,7 +33,7 @@ class CreateUCARTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->unique(['user_company_id', 'application_right_id']);
+                $table->unique(['user_company_id', 'application_right_id', 'deleted_at'], 'ucar_idx_1');
             });
         }
     }

@@ -49,18 +49,18 @@ class ValidateController extends Controller
      * @param TokenService $service
      * @throws Throwable
      */
-    private function validateToken(string $token_class_name, Request $request, TokenService $service)
+    private function validateToken(string $token_class_name, Request $request, TokenService $service): void
     {
         try {
             //is the token valid?
             if(($msg = $service->isValid($request->bearerToken())) !== true) {
-                return abort(406, $msg);
+                abort(406, $msg);
             }
 
             app($token_class_name);
         } catch(ExpiredException $ee)
         {
-            return abort(406, 'Expired');
+            abort(406, 'Expired');
         }
     }
 
@@ -69,7 +69,7 @@ class ValidateController extends Controller
      * Validates the front application.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|void
+     * @return void
      */
     public function app(Request $request)
     {
